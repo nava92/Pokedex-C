@@ -62,8 +62,9 @@
                                     <action selector="searchButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Rh8-r5-MoD"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="contactAdd" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="61h-n5-7LY">
-                                <rect key="frame" x="372" y="545" width="22" height="22"/>
+                            <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="61h-n5-7LY">
+                                <rect key="frame" x="346" y="519" width="48" height="48"/>
+                                <state key="normal" image="icons8-star-48"/>
                                 <connections>
                                     <action selector="favoriteButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="nSX-wk-Baj"/>
                                 </connections>
@@ -150,6 +151,7 @@
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <connections>
+                        <outlet property="favoriteButtonOutlet" destination="61h-n5-7LY" id="GRp-uS-Zge"/>
                         <outlet property="nameL" destination="NgM-1M-iSB" id="bUB-fT-DfF"/>
                         <outlet property="nombrePokemonTxtField" destination="ydN-VY-SFv" id="oWL-cp-cfE"/>
                         <outlet property="numeroPokemonTxtField" destination="9Cn-ih-ijy" id="2Tw-ng-huR"/>
@@ -219,4 +221,7 @@
             <point key="canvasLocation" x="999" y="130"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="icons8-star-48" width="48" height="48"/>
+    </resources>
 </document>

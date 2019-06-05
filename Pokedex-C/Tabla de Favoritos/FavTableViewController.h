@@ -11,7 +11,12 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+//Se declara como data source y delegate a este view controller de nuestro TableView de detalles.
+
 @interface FavTableViewController : UIViewController <UITableViewDataSource,UITableViewDelegate>
+
+
+//Declaración de variables y conexión de Outlets.
 
 @property (nonatomic, strong) NSMutableArray * favNombrePokemon;
 

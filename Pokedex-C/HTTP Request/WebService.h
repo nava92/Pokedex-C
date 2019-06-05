@@ -9,9 +9,8 @@
 #import <Foundation/Foundation.h>
 
 @interface WebService : NSObject
-//+ instance Globally -"ViewController me used "
-//+ second Web View
-//argumentname type objectname
+
+//Se añade la función a nuestro header.
 +(void)executequery:(NSString *)strurl strpremeter:(NSString *)premeter withblock:(void(^)(NSData *, NSError*))block;
 
 

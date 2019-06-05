@@ -44,7 +44,6 @@
     
     self.values = [[NSMutableArray alloc] init];
     
-    self.valuesID = [[NSMutableArray alloc] init];
     
     self.nombrePokemon = [[NSMutableArray alloc] init];
     
@@ -75,8 +74,8 @@
     }
     if (_numeroPokemonTxtField.text.length == 0) {
         [self requestdataWithName];
-        
     }
+    _favoriteButtonOutlet.hidden = NO;
 }
 
 //Botón para guardar como favorito.
@@ -85,18 +84,17 @@
     //Inicialización de la entidad y atributos en Core Data en donde se guardarán los datos
     NSManagedObject *entityObj = [NSEntityDescription insertNewObjectForEntityForName:@"Pokemon" inManagedObjectContext:context];
     [entityObj setValue:self.nameL.text forKey:@"nombre"];
-    
-    NSFetchRequest *requestExamLocation = [NSFetchRequest fetchRequestWithEntityName:@"Pokemon"];
-    NSArray *results = [context executeFetchRequest:requestExamLocation error:nil];
-    NSLog(@"El nuevo pokemon favorito es: %@",[results valueForKey:@"nombre"]);
-    
 }
 
 
+//Método para darle propiedades al TableView correspondiente a la información del pokemon encontrado.
+
+//Se definen 9 secciones ya que son los headers de nuestro JSON en APIPokemon.
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 17;
+    return 9;
 }
 
+//El numero de renglones en cada sección va a ser igual a la cantidad de keys dadas por el JSON.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return [self.keys count];
 }
@@ -107,7 +105,7 @@
 }
 
 
-
+//Se define el diseño de las celdas en la tabla.
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString * cell_id = @"myCell";
@@ -126,35 +124,52 @@
 
 
 
-
--(void)requestdataWithName  //Función para recibir JSON si el usuario ingresa el Nombre del Pokemon
+//Función para realizar la búsqueda dado el nombre del pokemon.
+-(void)requestdataWithName
 {
+    //Se realiza la conección a la API.
     mainstr = [NSString stringWithFormat:@"https://pokeapi.co/api/v2/pokemon/%@",_nombrePokemonTxtField.text];
     NSString * dbstr = [NSString stringWithFormat:@"Name=%@&Number=%@",_nombrePokemonTxtField.text,_numeroPokemonTxtField.text];
+    
+    //Se recibe la información y se imprime en consola.
     [WebService executequery:mainstr strpremeter:dbstr withblock:^(NSData * dbdata, NSError *error) {
         NSLog(@"Data: %@", dbdata);
+        
+        //Se verifica que no haya algún error en la descarga.
         if (dbdata!=nil)
         {
+            //Se guarda la informacion en un diccionario (maindic).
             _maindic = [NSJSONSerialization JSONObjectWithData:dbdata options:NSJSONReadingAllowFragments error:nil];
             NSLog(@"Response Data: %@", self->_maindic);
             
-            self->nameShowingLabel = [[self->_maindic objectForKey:@"forms"]valueForKey:@"name"];
-            self->_nombrePokemon = [[self->_maindic objectForKey:@"forms"]valueForKey:@"name"];
+            //Del diccionario extraemos llaves que nos ayudaran en la presentación ante el usuario, como el nombre del pokemon y su imagen.
             
+            self->nameShowingLabel = [[self->_maindic objectForKey:@"forms"]valueForKey:@"name"];
             self->imageToShow = [[self->_maindic objectForKey:@"sprites"]valueForKey:@"front_default"];
             
             
-            self->_nameL.text = [self->_nombrePokemon componentsJoinedByString:@", "];
+            //Se toman todos los valores del diccionario para llenar nuestra TableView.
+            self->_keys = [NSArray arrayWithArray:[self->_maindic allKeys]];
+            self->_values = [NSArray arrayWithArray:[self->_maindic allValues]];
             
+            
+            //Se asigna el nombre del pokemon buscado en un label (nameL).
+            self->_nameL.text = [self->nameShowingLabel componentsJoinedByString:@", "];
+            
+            //Se descarga y se asigna la imagen del pokemon.
             NSData *data = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:self->imageToShow]];
             
+            //Se actualiza nuesto TableView asincronamente.
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self->_pokemonImage setImage:[UIImage imageWithData:data]];
             });
             
-            NSLog(@"NAME = %@",self->_nombrePokemon);
-            NSLog(@"IMAGEB = %@", self->imageToShow);
+            //Se imprime en consola las propiedades a desplegar al usuario, solo para verificar que no haya algún error.
+            NSLog(@"NAME = %@",self->nameShowingLabel);
+            NSLog(@"IMAGE URL = %@", self->imageToShow);
             
+            
+            //Se actualiza el TableView con los datos de nuestro JSON dando los detalles del pokemon encontrado
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.tableViewDetalles reloadData];
             });
@@ -164,38 +179,45 @@
 
 -(void)requestdataWithNumber //Función para recibir JSON si el usuario ingresa el Número del Pokemon
 {
+    
+    //Se realiza la conección a la API.
     mainstr = [NSString stringWithFormat:@"https://pokeapi.co/api/v2/pokemon/%@",_numeroPokemonTxtField.text];
     NSString * dbstr = [NSString stringWithFormat:@"%@",_numeroPokemonTxtField.text];
+    
+    //Se recibe la información y se imprime en consola.
     [WebService executequery:mainstr strpremeter:dbstr withblock:^(NSData * dbdata, NSError *error) {
         NSLog(@"Data: %@", dbdata);
+        
+        //Se verifica que no haya algún error en la descarga.
         if (dbdata!=nil)
         {
+            //Se guarda la informacion en un diccionario (maindic).
             _maindic = [NSJSONSerialization JSONObjectWithData:dbdata options:NSJSONReadingAllowFragments error:nil];
             NSLog(@"Response Data: %@", self->_maindic);
+            
+            //Del diccionario extraemos llaves que nos ayudaran en la presentación ante el usuario, como el nombre del pokemon y su imagen.
             
             self->nameShowingLabel = [[self->_maindic objectForKey:@"forms"]valueForKey:@"name"];
             self->imageToShow = [[self->_maindic objectForKey:@"sprites"]valueForKey:@"front_default"];
             
             
-            
-            self->_valuesID = [self->_maindic objectForKey:@"abilities"];
-            
-            
-            
+            //Se toman todos los valores del diccionario para llenar nuestra TableView.
             self->_keys = [NSArray arrayWithArray:[self->_maindic allKeys]];
             self->_values = [NSArray arrayWithArray:[self->_maindic allValues]];
             
             
-            
-            
+            //Se asigna el nombre del pokemon buscado en un label (nameL).
             self->_nameL.text = [self->nameShowingLabel componentsJoinedByString:@", "];
             
+            //Se descarga y se asigna la imagen del pokemon.
             NSData *data = [[NSData alloc] initWithContentsOfURL:[NSURL URLWithString:self->imageToShow]];
             
+            //Se actualiza nuesto TableView asincronamente.
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self->_pokemonImage setImage:[UIImage imageWithData:data]];
             });
             
+            //Se imprime en consola las propiedades a desplegar al usuario, solo para verificar que no haya algún error.
             NSLog(@"NAME = %@",self->nameShowingLabel);
             NSLog(@"IMAGE URL = %@", self->imageToShow);
             
@@ -204,13 +226,8 @@
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.tableViewDetalles reloadData];
             });
-            
-            
-            
         }
     }];
-    
-    
 }
 
 
