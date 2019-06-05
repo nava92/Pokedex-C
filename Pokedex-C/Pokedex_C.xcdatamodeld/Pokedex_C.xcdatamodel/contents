@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14490.99" systemVersion="18E226" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
-    <entity name="Entity" representedClassName="Entity" syncable="YES" codeGenerationType="class">
-        <attribute name="imagenPokemon" optional="YES" attributeType="Binary" syncable="YES"/>
-        <attribute name="nombrePokemon" optional="YES" attributeType="String" syncable="YES"/>
+    <entity name="Pokemon" representedClassName="Pokemon" syncable="YES" codeGenerationType="class">
+        <attribute name="nombre" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Entity" positionX="-63" positionY="-18" width="128" height="75"/>
+        <element name="Pokemon" positionX="-54" positionY="18" width="128" height="60"/>
     </elements>
 </model>

@@ -10,37 +10,36 @@
 #import "ViewController.h"
 #import "WebService.h"
 #import "FavTableViewController.h"
+#import "AppDelegate.h"
 
+//Se cambia el NSLog habitual ya que esta limitado a los carácteres máximos del sistema (1024), Al ser JSON tan extensos se debió hacer esto, ya que de lo contrario no descargaba la información comleta en algunos casos.
 
 #define NSLog(FORMAT, ...) printf("%s\n", [[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String]);
 
 
 @interface ViewController ()
 {
+    //Se declaran las variables que van a contener los contenidos de nuestro JSON.
     NSString *mainstr;
-    //NSDictionary *maindic;
     
     NSMutableArray *nameShowingLabel;
     NSArray *imageToShow;
     
-    NSArray *abilities;
-    NSArray *game_indices;
-    
-    
+
+    AppDelegate *appDelegate;
+    NSManagedObjectContext *context;
+    NSArray *dictionaries;
 }
-
-
-
 @end
-
 
 
 @implementation ViewController
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    
+    //Se inicializan las variables que van a contener la información de nuestro JSON.
     self.keys = [[NSMutableArray alloc] init];
     
     self.values = [[NSMutableArray alloc] init];
@@ -49,30 +48,30 @@
     
     self.nombrePokemon = [[NSMutableArray alloc] init];
     
-    /*NSMutableArray *temp2MutableArray = [[NSMutableArray alloc] initWithObjects:@"3", @"3", nil];
-     
-     [[NSUserDefaults standardUserDefaults] setObject:temp2MutableArray forKey:@"mySampleArray"];
-     [[NSUserDefaults standardUserDefaults] synchronize];*/
+    
+    
+    //Para el uso de Core Data se define el contexto.
+    appDelegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
+    context = appDelegate.persistentContainer.viewContext;
     
 }
 
 
-
+//Función para "esconder" el teclado cuando el usuario toque en alguna parte de la pantalla.
 - (void)touchesBegan: (NSSet *)touches withEvent:(UIEvent *)event {
     [[self view] endEditing: TRUE];
 }
 
 
-- (IBAction)searchButton:(id)sender {
-}
-
-- (IBAction)favoriteButton:(id)sender {
-}
-
+//Botón para realizar la búsqueda del pokemon
 - (IBAction)searchButton:(UIButton *)sender {
+    
+    //Se llama a la función en dado caso de que el usuario haya preferido buscar el pokemon por número.
     if (_nombrePokemonTxtField.text.length == 0) {
         [self requestdataWithNumber];
         
+        
+    //Se llama a la función en dado caso de que el usuario haya preferido buscar el pokemon por nombre.
     }
     if (_numeroPokemonTxtField.text.length == 0) {
         [self requestdataWithName];
@@ -80,27 +79,18 @@
     }
 }
 
+//Botón para guardar como favorito.
 - (IBAction)favoriteButton:(UIButton *)sender {
-    //FavTableViewController *viewControllerB = [[FavTableViewController alloc] initWithNibName:@"FavTableViewController" bundle:nil];
-    //viewControllerB.favNombrePokemon = _nombrePokemon;
-    //[self pushViewController:viewControllerB animated: YES];
-    NSMutableArray *temp2MutableArray = [[NSMutableArray alloc] initWithObjects:[nameShowingLabel componentsJoinedByString:@", "], nil];
     
-    [[NSUserDefaults standardUserDefaults] setObject:temp2MutableArray forKey:@"mySampleArray"];
-    [[NSUserDefaults standardUserDefaults] synchronize];
+    //Inicialización de la entidad y atributos en Core Data en donde se guardarán los datos
+    NSManagedObject *entityObj = [NSEntityDescription insertNewObjectForEntityForName:@"Pokemon" inManagedObjectContext:context];
+    [entityObj setValue:self.nameL.text forKey:@"nombre"];
     
-    NSLog(@"NombreFav = %@", nameShowingLabel)
+    NSFetchRequest *requestExamLocation = [NSFetchRequest fetchRequestWithEntityName:@"Pokemon"];
+    NSArray *results = [context executeFetchRequest:requestExamLocation error:nil];
+    NSLog(@"El nuevo pokemon favorito es: %@",[results valueForKey:@"nombre"]);
+    
 }
-
--(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
-    if([segue.identifier isEqualToString:@"showFavsSegue"]){
-        FavTableViewController *controller = (FavTableViewController *)segue.destinationViewController;
-        controller.favNombrePokemon = nameShowingLabel;
-        FavTableViewController *viewControllerB = [[FavTableViewController alloc] initWithNibName:@"FavTableViewController" bundle:nil];
-        viewControllerB.favNombrePokemon = nameShowingLabel;
-    }
-}
-
 
 
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
@@ -153,7 +143,6 @@
             
             self->imageToShow = [[self->_maindic objectForKey:@"sprites"]valueForKey:@"front_default"];
             
-            self->abilities = [self->_maindic objectForKey:@"abilities"];
             
             self->_nameL.text = [self->_nombrePokemon componentsJoinedByString:@", "];
             
@@ -190,22 +179,13 @@
             
             
             self->_valuesID = [self->_maindic objectForKey:@"abilities"];
-            self->game_indices = [self->_maindic objectForKey:@"game_indices"];
             
             
             
             self->_keys = [NSArray arrayWithArray:[self->_maindic allKeys]];
             self->_values = [NSArray arrayWithArray:[self->_maindic allValues]];
             
-            /*for (NSDictionary *dict in dbdata) {
-             [dict enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
-             NSArray *valueArray = (NSArray *)obj;
-             
-             for (NSDictionary * namesDict in valueArray) {
-             [self->_values addObject:namesDict[@"name"]];
-             }
-             }];
-             }*/
+            
             
             
             self->_nameL.text = [self->nameShowingLabel componentsJoinedByString:@", "];
@@ -217,12 +197,10 @@
             });
             
             NSLog(@"NAME = %@",self->nameShowingLabel);
-            NSLog(@"IMAGEB = %@", self->imageToShow);
-            NSLog(@"ABILITIES = %@", self->abilities);
-            NSLog(@"GAME = %@", self->game_indices);
+            NSLog(@"IMAGE URL = %@", self->imageToShow);
             
             
-            //testTable = @[self->nameShowingLabel];
+            //Se actualiza el TableView con los datos de nuestro JSON dando los detalles del pokemon encontrado
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.tableViewDetalles reloadData];
             });
@@ -234,50 +212,6 @@
     
     
 }
-/*
- #pragma mark - Table view data source
- 
- - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
- return [self.tableViewData count];
- }
- 
- - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
- id sectionInfo= [self.tableViewData objectForKey:[NSString stringWithFormat:@"Section%ld", section +1]];
- return [(NSArray *)sectionInfo count];
- }
- 
- - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowPath:(NSIndexPath *)indexPath {
- static NSString *CellIdentifier =@"cellDetalles";
- 
- UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
- if (cell == nil) {
- cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
- }
- 
- id section = [self.tableViewData objectForKey:[NSString stringWithFormat:@"Section%ld", indexPath.section +1]];
- NSString *rowLabel = [section objectAtIndex:indexPath.row];
- cell.textLabel.text = rowLabel;
- 
- return cell;
- 
- }
- 
- - (NSString *)tableView: (UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
- switch (section) {
- case 0:
- return @"Section1";
- break;
- 
- default:
- return nil;
- break;
- }
- }
- 
- 
- */
-
-
 
 
 @end
