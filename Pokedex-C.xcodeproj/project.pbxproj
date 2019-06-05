@@ -14,6 +14,7 @@
 		1F10DE2F22A7E9B30092F58D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1F10DE2E22A7E9B30092F58D /* Assets.xcassets */; };
 		1F10DE3222A7E9B30092F58D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1F10DE3022A7E9B30092F58D /* LaunchScreen.storyboard */; };
 		1F10DE3522A7E9B30092F58D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F10DE3422A7E9B30092F58D /* main.m */; };
+		1F10DE3D22A7F45F0092F58D /* WebService.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F10DE3C22A7F45F0092F58D /* WebService.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,8 @@
 		1F10DE3122A7E9B30092F58D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1F10DE3322A7E9B30092F58D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1F10DE3422A7E9B30092F58D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		1F10DE3B22A7F45F0092F58D /* WebService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WebService.h; sourceTree = "<group>"; };
+		1F10DE3C22A7F45F0092F58D /* WebService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WebService.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +67,7 @@
 				1F10DE2322A7E9B10092F58D /* AppDelegate.m */,
 				1F10DE2522A7E9B10092F58D /* ViewController.h */,
 				1F10DE2622A7E9B10092F58D /* ViewController.m */,
+				1F10DE3F22A7F47F0092F58D /* HTTP Request */,
 				1F10DE2822A7E9B10092F58D /* Main.storyboard */,
 				1F10DE2E22A7E9B30092F58D /* Assets.xcassets */,
 				1F10DE3022A7E9B30092F58D /* LaunchScreen.storyboard */,
@@ -72,6 +76,15 @@
 				1F10DE2B22A7E9B10092F58D /* Pokedex_C.xcdatamodeld */,
 			);
 			path = "Pokedex-C";
+			sourceTree = "<group>";
+		};
+		1F10DE3F22A7F47F0092F58D /* HTTP Request */ = {
+			isa = PBXGroup;
+			children = (
+				1F10DE3B22A7F45F0092F58D /* WebService.h */,
+				1F10DE3C22A7F45F0092F58D /* WebService.m */,
+			);
+			path = "HTTP Request";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -146,6 +159,7 @@
 			files = (
 				1F10DE2722A7E9B10092F58D /* ViewController.m in Sources */,
 				1F10DE2422A7E9B10092F58D /* AppDelegate.m in Sources */,
+				1F10DE3D22A7F45F0092F58D /* WebService.m in Sources */,
 				1F10DE3522A7E9B30092F58D /* main.m in Sources */,
 				1F10DE2D22A7E9B20092F58D /* Pokedex_C.xcdatamodeld in Sources */,
 			);
