@@ -57,5 +57,25 @@
 @property (nonatomic, strong) NSMutableArray *nombrePokemon;
 
 
+
+@property (nonatomic, strong) NSMutableArray *abilitesArray;
+
+@property (nonatomic, strong) NSMutableArray *formsArray;
+
+@property (nonatomic, strong) NSMutableArray *gameIndicesArray;
+
+@property (nonatomic, strong) NSMutableArray *heldItemsArray;
+
+@property (nonatomic, strong) NSMutableArray *movesArray;
+
+@property (nonatomic, strong) NSMutableArray *speciesArray;
+
+@property (nonatomic, strong) NSMutableArray *spritesArray;
+
+@property (nonatomic, strong) NSMutableArray *statsArray;
+
+@property (nonatomic, strong) NSMutableArray *typesArray;
+
+
 @end
 

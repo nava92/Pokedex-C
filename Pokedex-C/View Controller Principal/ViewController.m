@@ -25,6 +25,7 @@
     NSMutableArray *nameShowingLabel;
     NSArray *imageToShow;
     
+    
 
     AppDelegate *appDelegate;
     NSManagedObjectContext *context;
@@ -46,6 +47,27 @@
     
     
     self.nombrePokemon = [[NSMutableArray alloc] init];
+    
+    
+    //Arrays que contienen info de las categorías del JSON.
+    self.abilitesArray = [[NSMutableArray alloc] init];
+    
+    self.formsArray = [[NSMutableArray alloc] init];
+    
+    self.gameIndicesArray = [[NSMutableArray alloc] init];
+
+    self.heldItemsArray = [[NSMutableArray alloc] init];
+
+    self.movesArray = [[NSMutableArray alloc] init];
+
+    self.speciesArray = [[NSMutableArray alloc] init];
+
+    self.spritesArray = [[NSMutableArray alloc] init];
+
+    self.statsArray = [[NSMutableArray alloc] init];
+
+    self.typesArray = [[NSMutableArray alloc] init];
+
     
     
     
@@ -96,12 +118,111 @@
 
 //El numero de renglones en cada sección va a ser igual a la cantidad de keys dadas por el JSON.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.keys count];
+    //return [self.keys count];
+    
+    //____________________::::::::::::::: codigo en Construcción.
+    
+    /*if (section == 0) {
+        return [self.abilitesArray count];
+    }
+    return [self.keys count];*/
+    
+    switch (section) {
+        case 0:
+            return [self.abilitesArray count];
+            break;
+            
+        case 1:
+            return [self.abilitesArray count];
+            break;
+            
+        case 2:
+            return [self.abilitesArray count];
+            break;
+            
+        case 3:
+            return [self.abilitesArray count];
+            break;
+            
+        case 4:
+            return [self.abilitesArray count];
+            break;
+            
+        case 5:
+            return [self.abilitesArray count];
+            break;
+            
+        case 6:
+            return [self.abilitesArray count];
+            break;
+            
+        case 7:
+            return [self.abilitesArray count];
+            break;
+            
+        case 8:
+            return [self.abilitesArray count];
+            break;
+            
+        default:
+            return [self.abilitesArray count];
+            break;
+    }
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    //NSString *title = [[_maindic allKeys] objectAtIndex:section];
+    //return title;
+    /*if (section == 0) {
+        return @"Abilities";
+    }
+    if (section == 1) {
+        return @"Forms";
+    }
     NSString *title = [[_maindic allKeys] objectAtIndex:section];
-    return title;
+    return title;*/
+    
+    switch (section) {
+        case 0:
+            return @"Abilities";
+            break;
+            
+        case 1:
+            return @"Forms";
+            break;
+            
+        case 2:
+            return @"Game Indices";
+            break;
+            
+        case 3:
+            return @"Held Items";
+            break;
+            
+        case 4:
+            return @"Moves";
+            break;
+        
+        case 5:
+            return @"Species";
+            break;
+            
+        case 6:
+            return @"Sprites";
+            break;
+            
+        case 7:
+            return @"Stats";
+            break;
+            
+        case 8:
+            return @"Types";
+            break;
+            
+        default:
+            return @"Pokemon extra Data";
+            break;
+    }
 }
 
 
@@ -116,8 +237,13 @@
         cell = [nib objectAtIndex:0];
     }
     
-    cell.textLabel.text = [NSString stringWithFormat:@"%@",[self.keys objectAtIndex:indexPath.row]];
-    [cell.detailTextLabel setText:[self.values objectAtIndex:indexPath.row]];
+    //__________________________CONSTRUCCIÓN////////
+    // BUENO
+    //cell.textLabel.text = [NSString stringWithFormat:@"%@",[self.keys objectAtIndex:indexPath.row]];
+    cell.textLabel.text = [NSString stringWithFormat:@"%@",[self.abilitesArray objectAtIndex:indexPath.row
+                                                            ]];
+
+    //[cell.detailTextLabel setText:[self.values objectAtIndex:indexPath.row]];
     
     return cell;
 }
@@ -199,6 +325,19 @@
             
             self->nameShowingLabel = [[self->_maindic objectForKey:@"forms"]valueForKey:@"name"];
             self->imageToShow = [[self->_maindic objectForKey:@"sprites"]valueForKey:@"front_default"];
+            
+            //----------........--------------
+            //Codigo en construccion
+            
+            self->_abilitesArray = [[[self->_maindic objectForKey:@"abilities"]valueForKey:@"ability"]valueForKey:@"name"];
+            
+            NSLog(@"Abilities: %@", self->_abilitesArray);
+            
+            
+            
+            
+            //----------........--------------
+            
             
             
             //Se toman todos los valores del diccionario para llenar nuestra TableView.
