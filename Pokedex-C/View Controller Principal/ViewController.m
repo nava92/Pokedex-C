@@ -133,11 +133,11 @@
             break;
             
         case 1:
-            return [self.abilitesArray count];
+            return [self.formsArray count];
             break;
             
         case 2:
-            return [self.abilitesArray count];
+            return [self.gameIndicesArray count];
             break;
             
         case 3:
@@ -240,7 +240,16 @@
     //__________________________CONSTRUCCIÓN////////
     // BUENO
     //cell.textLabel.text = [NSString stringWithFormat:@"%@",[self.keys objectAtIndex:indexPath.row]];
-    cell.textLabel.text = [NSString stringWithFormat:@"%@",[self.abilitesArray objectAtIndex:indexPath.row
+    //cell.textLabel.text = [NSString stringWithFormat:@"%@",[self.abilitesArray objectAtIndex:indexPath.row
+    
+    switch (cell) {
+        case <#constant#>:
+            <#statements#>
+            break;
+            
+        default:
+            break;
+    }
                                                             ]];
 
     //[cell.detailTextLabel setText:[self.values objectAtIndex:indexPath.row]];
@@ -330,6 +339,24 @@
             //Codigo en construccion
             
             self->_abilitesArray = [[[self->_maindic objectForKey:@"abilities"]valueForKey:@"ability"]valueForKey:@"name"];
+            
+            self->_formsArray = [[self->_maindic objectForKey:@"forms"]valueForKey:@"name"];
+            
+            self->_gameIndicesArray = [[[self->_maindic objectForKey:@"game_indices"]valueForKey:@"version"]valueForKey:@"name"];
+            
+            self->_heldItemsArray = [[[self->_maindic objectForKey:@"abilities"]valueForKey:@"ability"]valueForKey:@"name"];
+            
+            self->_movesArray = [[[self->_maindic objectForKey:@"abilities"]valueForKey:@"ability"]valueForKey:@"name"];
+            
+            self->_speciesArray = [[[self->_maindic objectForKey:@"abilities"]valueForKey:@"ability"]valueForKey:@"name"];
+            
+            self->_spritesArray = [[[self->_maindic objectForKey:@"abilities"]valueForKey:@"ability"]valueForKey:@"name"];
+            
+            self->_statsArray = [[[self->_maindic objectForKey:@"abilities"]valueForKey:@"ability"]valueForKey:@"name"];
+            
+            self->_typesArray = [[[self->_maindic objectForKey:@"abilities"]valueForKey:@"ability"]valueForKey:@"name"];
+            
+            
             
             NSLog(@"Abilities: %@", self->_abilitesArray);
             
