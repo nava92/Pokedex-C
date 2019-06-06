@@ -62,14 +62,10 @@
 
     self.speciesArray = [[NSMutableArray alloc] init];
 
-    self.spritesArray = [[NSMutableArray alloc] init];
-
     self.statsArray = [[NSMutableArray alloc] init];
 
     self.typesArray = [[NSMutableArray alloc] init];
 
-    
-    
     
     //Para el uso de Core Data se define el contexto.
     appDelegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
@@ -111,21 +107,13 @@
 
 //Método para darle propiedades al TableView correspondiente a la información del pokemon encontrado.
 
-//Se definen 9 secciones ya que son los headers de nuestro JSON en APIPokemon.
+//Se definen 8 secciones ya que son los headers de nuestro JSON en APIPokemon.
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
-    return 9;
+    return 8;
 }
 
 //El numero de renglones en cada sección va a ser igual a la cantidad de keys dadas por el JSON.
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    //return [self.keys count];
-    
-    //____________________::::::::::::::: codigo en Construcción.
-    
-    /*if (section == 0) {
-        return [self.abilitesArray count];
-    }
-    return [self.keys count];*/
     
     switch (section) {
         case 0:
@@ -141,46 +129,32 @@
             break;
             
         case 3:
-            return [self.abilitesArray count];
+            return [self.heldItemsArray count];
             break;
             
         case 4:
-            return [self.abilitesArray count];
+            return [self.movesArray count];
             break;
             
         case 5:
-            return [self.abilitesArray count];
+            return [self.speciesArray count];
             break;
             
         case 6:
-            return [self.abilitesArray count];
+            return [self.statsArray count];
             break;
             
         case 7:
-            return [self.abilitesArray count];
-            break;
-            
-        case 8:
-            return [self.abilitesArray count];
+            return [self.typesArray count];
             break;
             
         default:
-            return [self.abilitesArray count];
+            return [self.typesArray count];
             break;
     }
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    //NSString *title = [[_maindic allKeys] objectAtIndex:section];
-    //return title;
-    /*if (section == 0) {
-        return @"Abilities";
-    }
-    if (section == 1) {
-        return @"Forms";
-    }
-    NSString *title = [[_maindic allKeys] objectAtIndex:section];
-    return title;*/
     
     switch (section) {
         case 0:
@@ -208,14 +182,10 @@
             break;
             
         case 6:
-            return @"Sprites";
-            break;
-            
-        case 7:
             return @"Stats";
             break;
             
-        case 8:
+        case 7:
             return @"Types";
             break;
             
@@ -237,20 +207,44 @@
         cell = [nib objectAtIndex:0];
     }
     
-    //__________________________CONSTRUCCIÓN////////
-    // BUENO
-    //cell.textLabel.text = [NSString stringWithFormat:@"%@",[self.keys objectAtIndex:indexPath.row]];
-    //cell.textLabel.text = [NSString stringWithFormat:@"%@",[self.abilitesArray objectAtIndex:indexPath.row
-    
-    switch (cell) {
-        case <#constant#>:
-            <#statements#>
+    switch (indexPath.section) {
+        case 0:
+            cell.textLabel.text = [NSString stringWithFormat:@"%@",[self.abilitesArray objectAtIndex:indexPath.row]];
+            break;
+            
+        case 1:
+            cell.textLabel.text = [NSString stringWithFormat:@"%@",[self.formsArray objectAtIndex:indexPath.row]];
+            break;
+            
+        case 2:
+            cell.textLabel.text = [NSString stringWithFormat:@"%@",[self.gameIndicesArray objectAtIndex:indexPath.row]];
+            break;
+            
+        case 3:
+            cell.textLabel.text = [NSString stringWithFormat:@"%@",[self.heldItemsArray objectAtIndex:indexPath.row]];
+            break;
+            
+        case 4:
+            cell.textLabel.text = [NSString stringWithFormat:@"%@",[self.movesArray objectAtIndex:indexPath.row]];
+            break;
+            
+        case 5:
+            cell.textLabel.text = [NSString stringWithFormat:@"%@",[self.speciesArray objectAtIndex:indexPath.row]];
+            break;
+            
+        case 6:
+            cell.textLabel.text = [NSString stringWithFormat:@"%@",[self.statsArray objectAtIndex:indexPath.row]];
+            break;
+            
+        case 7:
+            cell.textLabel.text = [NSString stringWithFormat:@"%@",[self.typesArray objectAtIndex:indexPath.row]];
             break;
             
         default:
+            cell.textLabel.text = [NSString stringWithFormat:@"%@",[self.abilitesArray objectAtIndex:indexPath.row]];
             break;
     }
-                                                            ]];
+    
 
     //[cell.detailTextLabel setText:[self.values objectAtIndex:indexPath.row]];
     
@@ -281,6 +275,25 @@
             
             self->nameShowingLabel = [[self->_maindic objectForKey:@"forms"]valueForKey:@"name"];
             self->imageToShow = [[self->_maindic objectForKey:@"sprites"]valueForKey:@"front_default"];
+            
+            
+            
+            //Se llenan nuestros arrays con las keys del diccionario.
+            self->_abilitesArray = [[[self->_maindic objectForKey:@"abilities"]valueForKey:@"ability"]valueForKey:@"name"];
+            
+            self->_formsArray = [[self->_maindic objectForKey:@"forms"]valueForKey:@"name"];
+            
+            self->_gameIndicesArray = [[[self->_maindic objectForKey:@"game_indices"]valueForKey:@"version"]valueForKey:@"name"];
+            
+            self->_heldItemsArray = [[[self->_maindic objectForKey:@"held_items"]valueForKey:@"item"]valueForKey:@"name"];
+            
+            self->_movesArray = [[[self->_maindic objectForKey:@"moves"]valueForKey:@"move"]valueForKey:@"name"];
+            
+            self->_speciesArray = [[self->_maindic valueForKey:@"forms"]valueForKey:@"name"];
+            
+            self->_statsArray = [[[self->_maindic objectForKey:@"stats"]valueForKey:@"stat"]valueForKey:@"name"];
+            
+            self->_typesArray = [[[self->_maindic objectForKey:@"types"]valueForKey:@"type"]valueForKey:@"name"];
             
             
             //Se toman todos los valores del diccionario para llenar nuestra TableView.
@@ -335,35 +348,24 @@
             self->nameShowingLabel = [[self->_maindic objectForKey:@"forms"]valueForKey:@"name"];
             self->imageToShow = [[self->_maindic objectForKey:@"sprites"]valueForKey:@"front_default"];
             
-            //----------........--------------
-            //Codigo en construccion
             
+            
+            //Se llenan nuestros arrays con las keys del diccionario.
             self->_abilitesArray = [[[self->_maindic objectForKey:@"abilities"]valueForKey:@"ability"]valueForKey:@"name"];
             
             self->_formsArray = [[self->_maindic objectForKey:@"forms"]valueForKey:@"name"];
             
             self->_gameIndicesArray = [[[self->_maindic objectForKey:@"game_indices"]valueForKey:@"version"]valueForKey:@"name"];
             
-            self->_heldItemsArray = [[[self->_maindic objectForKey:@"abilities"]valueForKey:@"ability"]valueForKey:@"name"];
+            self->_heldItemsArray = [[[self->_maindic objectForKey:@"held_items"]valueForKey:@"item"]valueForKey:@"name"];
             
-            self->_movesArray = [[[self->_maindic objectForKey:@"abilities"]valueForKey:@"ability"]valueForKey:@"name"];
+            self->_movesArray = [[[self->_maindic objectForKey:@"moves"]valueForKey:@"move"]valueForKey:@"name"];
             
-            self->_speciesArray = [[[self->_maindic objectForKey:@"abilities"]valueForKey:@"ability"]valueForKey:@"name"];
+            self->_speciesArray = [[self->_maindic valueForKey:@"forms"]valueForKey:@"name"];
             
-            self->_spritesArray = [[[self->_maindic objectForKey:@"abilities"]valueForKey:@"ability"]valueForKey:@"name"];
+            self->_statsArray = [[[self->_maindic objectForKey:@"stats"]valueForKey:@"stat"]valueForKey:@"name"];
             
-            self->_statsArray = [[[self->_maindic objectForKey:@"abilities"]valueForKey:@"ability"]valueForKey:@"name"];
-            
-            self->_typesArray = [[[self->_maindic objectForKey:@"abilities"]valueForKey:@"ability"]valueForKey:@"name"];
-            
-            
-            
-            NSLog(@"Abilities: %@", self->_abilitesArray);
-            
-            
-            
-            
-            //----------........--------------
+            self->_typesArray = [[[self->_maindic objectForKey:@"types"]valueForKey:@"type"]valueForKey:@"name"];
             
             
             

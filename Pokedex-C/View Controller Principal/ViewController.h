@@ -70,8 +70,6 @@
 
 @property (nonatomic, strong) NSMutableArray *speciesArray;
 
-@property (nonatomic, strong) NSMutableArray *spritesArray;
-
 @property (nonatomic, strong) NSMutableArray *statsArray;
 
 @property (nonatomic, strong) NSMutableArray *typesArray;
